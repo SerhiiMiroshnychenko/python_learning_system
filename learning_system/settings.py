@@ -23,9 +23,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-3c*&*$0@k9temd61m14etzq1hfdaov7#2t70*52vz=v+l(8qpb'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True  # Статус True => тільки для розробки, що бачити, що де відбувається.
+# На "продакшн" треба ставити False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = []  # Список ip адрес на яких дозволено запускати проєкт
 
 
 # Application definition
@@ -37,7 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-]
+
+    # Свої
+    'account',
+    'article',
+]  # Інстальовані в проєкті застосунки. Автоматично створені(перший блок),
+# та свої(другий блок, треба вписувати вручну)
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -47,9 +53,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
+]  # "Декоратори" для запитів
 
-ROOT_URLCONF = 'learning_system.urls'
+ROOT_URLCONF = 'learning_system.urls'  # Основна конфігурація URL адрес
 
 TEMPLATES = [
     {
@@ -78,7 +84,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
-}
+}  # Налаштування бази даних
 
 
 # Password validation
@@ -97,7 +103,7 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
-]
+]  # Валідатори паролів
 
 
 # Internationalization
