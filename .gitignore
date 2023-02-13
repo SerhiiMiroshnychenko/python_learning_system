@@ -2,3 +2,4 @@
 .venv
 account/migrations
 article/migrations
+db.sqlite3
