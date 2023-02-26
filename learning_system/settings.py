@@ -34,7 +34,7 @@ ALLOWED_HOSTS = []  # Список ip адрес на яких дозволен�
 
 INSTALLED_APPS = [
     'django.contrib.admin',
-    'django.contrib.auth',
+    'django.contrib.auth',  # авторизація
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -43,6 +43,10 @@ INSTALLED_APPS = [
     # Свої
     'account',
     'article',
+
+    # Додатково імпортовані
+    'bootstrap4',
+    'crispy_forms',
 ]  # Інстальовані в проєкті застосунки. Автоматично створені(перший блок),
 # та свої(другий блок, треба вписувати вручну)
 
@@ -74,6 +78,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries': {
+                'custom_filters': 'learning_system.templatetags.custom_filters',
+            },
         },
     },
 ]
@@ -125,6 +132,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = (
@@ -137,3 +145,6 @@ STATICFILES_DIRS = (
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_REDIRECT_URL = '/'  # Перевизначаємо змінну для перенаправлення після авторизації
+LOGOUT_REDIRECT_URL = 'home'  # У нас '/' == 'home'

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+{% load custom_filters %}
+<html lang="uk">
+<head>
+    <meta charset="utf-8">
+    <title>Логування</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: white;
+        }
+
+        form {
+            background-color: #F58A2E;
+            padding: 25px;
+            border-radius: 5px;
+            color: white;
+        }
+         /* стилі для полів вводу */
+        .half-width {
+            width: 50%;
+        }
+    </style>
+</head>
+<body>
+    <h2 class="text-center" style="color: #F58A2E">LOGIN</h2>
+    <form method="post" class="mx-auto mt-5 half-width">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.username.label_tag }}
+            {{ form.username|add_class:"form-control half-width" }}
+        </div>
+        <div class="form-group">
+            {{ form.password.label_tag }}
+            {{ form.password|add_class:"form-control half-width" }}
+        </div>
+        <button type="submit" class="form-group">Log in</button>
+    </form>
+</body>

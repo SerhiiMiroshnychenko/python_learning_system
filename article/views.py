@@ -1,18 +1,26 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models import Count, Avg, Max, Min
 
 from article.forms import TopicForm
-from article.models import Topic, User
+from article.models import Topic, User, Comments
 import datetime
 from django.views.generic.list import ListView
+from django.views.generic.edit import FormView
 
 
 def get_topic_list(request):
     print(request.GET)
     print(request.GET.get('type'))
-    context = {'topic_list': Topic.objects.all()}
-    # context = {'topic_list': ['Topic 1', 'Topic 2', 'Topic 3']}
+    print(request.headers)
+    print(request.headers.get('Accept-Language'))
+    if topic_type := request.GET.get('type', None):
+        queryset = Topic.objects.filter(type=topic_type)
+    else:
+        queryset = Topic.objects.all()
+    context = {'topic_list': queryset}
+    print(queryset)
     return render(request, 'courses.html', context)
 
 
@@ -20,6 +28,7 @@ def get_topic_list(request):
 # Update - 2 variants
 # Delete - ? variants
 
+@login_required
 def create_topic(request):
 
     # Var.1
@@ -28,14 +37,14 @@ def create_topic(request):
     # topic.save()
 
     # Var.2
-    topic = Topic.objects.create(title='Django ORM', text='Wea re learning Django', type=4)
+    topic = Topic.objects.create(title='Django ORM', text='We are learning Django', type=4)
     return render(request, 'courses.html', {'topic_list': [topic]})
 
 
 def update_topic(request):
 
     # Var.1
-    topic = Topic.objects.get(id=4)
+    # topic = Topic.objects.get(id=4)
     # topic.author = User.objects.get(username='Serhii')
     # topic.save()
     data = {'text': 'New text', 'subtitle': 'My subtitle',
@@ -45,7 +54,7 @@ def update_topic(request):
     # topic.save()
     # return render(request, 'courses.html', {'topic_list': [topic]})
     # Var.2
-    topic = Topic.objects.filter(id=4)
+    topic = Topic.objects.filter(title='Django ORM')
     topic.update(**data)
     return render(request, 'courses.html', {'topic_list': topic})
 
@@ -86,11 +95,25 @@ def filter_topic(request):
 
 
 def create_topic_form(request):
+    """Працює"""
     if request.method == 'POST':
+        print(request.POST.get("title"))
         form = TopicForm(request.POST)
         if form.is_valid():
-            # topic = Topic.objects.create(**form.cleaned_data)
-            # return render(request, 'courses.html', {'topic_list': topic})
+            topic = Topic.objects.create(**form.cleaned_data)
+            return render(request, 'courses.html', {'topic_list': [topic]})
+    else:
+        form = TopicForm()
+        return render(request, 'contact.html', {'form': form})
+
+
+
+def create_topic_form1(request):
+    """Теж працює"""
+    if request.method == 'POST':
+        print(request.POST.get("title"))
+        form = TopicForm(request.POST)
+        if form.is_valid():
             Topic.objects.create(**form.cleaned_data)
             return redirect('topic_list')
     else:
@@ -99,10 +122,38 @@ def create_topic_form(request):
 
 
 class TopicListView(ListView):
-    queryset = Topic.objects.all()  # або model = Topic
+    # model = Topic
     template_name = 'courses.html'
 
-    
+    def get_queryset(self):
+        if topic_type := self.request.GET.get('type', None):
+            self.queryset = Topic.objects.filter(type=topic_type)
+        else:
+            self.queryset = Topic.objects.all()
+        print(self.queryset)
+        return self.queryset
+
+
+class TopicFormView(FormView):
+    template_name = 'contact.html'
+    form_class = TopicForm
+    success_url = '/articles/topics/'
+
+    def form_valid(self, form):
+        Topic.objects.create(**form.cleaned_data)
+        return HttpResponseRedirect(self.get_success_url())
+
+
+def get_single_topic(request, pk):
+    try:
+        topic = Topic.objects.get(id=pk)
+    except Topic.DoesNotExist:
+        topic = None
+    comments = Comments.objects.filter(topic=topic).order_by('-date')
+    return render(request, 'topic.html', {'topic': topic, 'comments': comments})
+
+
+
 
 
 

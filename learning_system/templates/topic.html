@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load topic_filter %}
+{% block content %}
+    <section id="inner-headline">
+    <div class="container">
+       <div class="row">
+          <div class="col-lg-12">
+             <h2 class="pageTitle">{% exists topic %}</h2>
+          </div>
+       </div>
+    </div>
+    </section>
+    <section id="content">
+   <div class="container content">
+       <!-- Service Blcoks -->
+       <div class="row service-v1 margin-bottom-40">
+         {% if topic %}
+           <h3>{{ topic.subtitle }}</h3>
+           <h6 align="right">{{ topic.creation_date|format_date }}</h6>
+           <p>{{ topic.text }}</p>
+           {% if topic.url %}
+               <p><a href="{{ topic.url }}">Посилання на основний ресурс</a></p>
+           {% endif %}
+             <hr>
+             <h5>Коментарі: {{ comments|length }}</h5>
+             {% for comment in comments %}
+                 <div>
+                    <p>Автор: <b>{{ comment.author.username }}</b> -|- Опубліковано <b>{{ comment.date|timesince }}</b> тому.</p>
+                    <p>{{ comment.text }}</p>
+                 </div>
+             {% endfor %}
+         {% else %}
+            <h3>Такого допису не існує</h3>
+         {% endif %}
+       </div>
+   </div>
+   </section>
+{%  endblock %}

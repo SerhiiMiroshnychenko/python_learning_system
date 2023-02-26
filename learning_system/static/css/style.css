@@ -272,7 +272,6 @@ header ul.nav li ul li ul {
   border-right: none;
   border-bottom: none;
   border-left: none;
-  border-bottom-color: none;
   content:none;
 }
 .navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:hover, .navbar-default .navbar-nav>.active>a:focus {
@@ -447,7 +446,7 @@ max-width: 100%;
 .testimonial-area {
 padding: 0 0 0 0;
 margin:0;
-background: url(../img/low-poly01.jpg) fixed center center;
+background: url(../img/logo.png) fixed center center;
 background-size: cover;
 -webkit-background-size: cover;
 -moz-background-size: cover;
@@ -635,7 +634,8 @@ max-width: 100%;
 color: #F58A2E;
 }
 .post3 time .year {
-font: 700 24px/21px;
+font-size: 24px;
+font-weight: 700;
 color: #000;
 }
 .post3 p {
@@ -1422,7 +1422,7 @@ article img.pull-right, article .align-right{
 	float:right;
 	margin:5px 0 15px 15px;
 }
- ============================= */
+ /*============================= */
 
 .clear-marginbot{
 	margin-bottom:0;
@@ -1477,9 +1477,7 @@ article img.pull-right, article .align-right{
   overflow: hidden;
   border-bottom: 2px solid #E0E0E0;
 }
-.media:Genius-child {
-  margin-top: 0;
-}
+
 .media {
   margin-top: 15px;
 }
@@ -1633,7 +1631,7 @@ article img.pull-right, article .align-right{
 
 @media (max-width: 767px) {
 .navbar-default .navbar-collapse {
-  border-color: none;
+
   background: #F58A2E;
 }
 .navbar-default .navbar-toggle .icon-bar {
